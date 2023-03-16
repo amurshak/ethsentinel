@@ -1,2 +1,2 @@
 # ethsentinel
-A simple webapp for monitoring transactions on the latest Ethereum block.
+A simple web-app for monitoring transactions on the latest Ethereum block.
