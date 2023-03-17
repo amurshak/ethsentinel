@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+
+  const [data, setData] = useState('Initializing...');
+
+  useEffect(() => {
+    const sse = new EventSource('/stream');
+    
+    function handleStream(e) {
+      console.log(e)
+      setData(e.data)
+    }
+    sse.onmessage = (e) => {handleStream(e)};
+
+    sse.onerror = e => {
+      sse.close()
+    }
+
+    return () => {
+      sse.close();
+    };
+  }, );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {data}
     </div>
   );
 }
