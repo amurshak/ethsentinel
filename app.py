@@ -19,24 +19,21 @@ ALCHEMY_API_KEY = os.getenv('ALCHEMY_API_KEY')
 COINMARKETCAP_API_KEY = os.getenv('COINMARKETCAP_API_KEY')
 
 
+#Establish Alchemy connection
 alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/" + ALCHEMY_API_KEY
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
-latest_block = w3.eth.block_number
 
 
-
-url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
+#Set up request for CoinMarketCap
+coinmarket_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
   'symbol': 'ETH'
 }
-
 headers = {
   'Accepts': 'application/json',
   'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
 }
 
-# session = Session()
-# session.headers.update(headers)
 
 
 def get_eth_pricing():
