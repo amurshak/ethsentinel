@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+
 function App() {
 
-  const [data, setData] = useState('Initializing...');
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const sse = new EventSource('/stream');
     
+    // sse.addEventListener('message', (e) => {
+    //   const newData = JSON.parse(e.data);
+    //   setData(newData);
+    // })
+
     function handleStream(e) {
-      console.log(e)
-      setData(e.data)
+      console.log(e);
+      const newData = JSON.parse(e.data)
+      console.log((newData))
+      // setData(e.data)
+      setData(newData)
     }
     sse.onmessage = (e) => {handleStream(e)};
 
@@ -25,7 +34,27 @@ function App() {
 
   return (
     <div className="App">
-      {data}
+          <table>
+            <thead>
+              <tr>
+                <th>Block</th>
+                <th>To</th>
+                <th>From</th>
+                <th>Value (ETH)</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.Block}</td>
+                  <td>{item.To}</td>
+                  <td>{item.From}</td>
+                  <td>{item.Eth}</td>
+                </tr>
+              ))}
+            </tbody>
+    </table>
     </div>
   );
 }
