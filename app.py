@@ -1,26 +1,30 @@
 import os
-from flask import Flask, Response, send_from_directory
-from web3 import Web3
+import json
 import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-import json
-from time import sleep
-from flask_cors import CORS
 from decimal import Decimal
+from time import sleep
+from web3 import Web3
+from flask import Flask, Response, send_from_directory
+from flask_cors import CORS
 
+#Initialize app and configuration
 app = Flask(__name__, static_folder="./client/build/static")
 CORS(app)
 app.config['FLASK_DEBUG'] = os.getenv('FLASK_DEBUG')
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
-
+#Get API keys from local environment
 ALCHEMY_API_KEY = os.getenv('ALCHEMY_API_KEY')
+COINMARKETCAP_API_KEY = os.getenv('COINMARKETCAP_API_KEY')
+
+
 alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/" + ALCHEMY_API_KEY
 w3 = Web3(Web3.HTTPProvider(alchemy_url))
 latest_block = w3.eth.block_number
 
 
-COINMARKETCAP_API_KEY = os.getenv('COINMARKETCAP_API_KEY')
+
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
   'symbol': 'ETH'
@@ -79,10 +83,7 @@ def stream():
             except Exception as e:
                 print(e)
                 pass
-
-            # df = pd.DataFrame(transactions)
-            
-            
+                      
             sleep(10)
     return Response(get_data(),mimetype='text/event-stream')
 
