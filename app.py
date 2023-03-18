@@ -62,7 +62,7 @@ def get_block_data(latest_block):
         transaction = w3.eth.get_transaction(t)
         value = transaction["value"]
 
-        #Convert current value from wei to ETH & USD
+        #Convert current value from Wei to ETH & USD
         converted_to_eth = float(w3.from_wei(value, 'ether'))
         converted_to_usd = float(w3.from_wei(value, 'ether') * Decimal(eth_price))
         
