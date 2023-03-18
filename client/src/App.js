@@ -7,13 +7,14 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    //Server-Send Event Source
     const sse = new EventSource('/stream');
 
+    //Parse stream data and update
     function handleStream(e) {
       console.log(e);
       const newData = JSON.parse(e.data)
-      console.log((newData))
-      // setData(e.data)
+
       setData(newData)
     }
     sse.onmessage = (e) => {handleStream(e)};
