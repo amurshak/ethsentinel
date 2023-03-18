@@ -8,11 +8,6 @@ function App() {
 
   useEffect(() => {
     const sse = new EventSource('/stream');
-    
-    // sse.addEventListener('message', (e) => {
-    //   const newData = JSON.parse(e.data);
-    //   setData(newData);
-    // })
 
     function handleStream(e) {
       console.log(e);
@@ -41,6 +36,7 @@ function App() {
                 <th>To</th>
                 <th>From</th>
                 <th>Value (ETH)</th>
+                <th>Value (USD)</th>
 
               </tr>
             </thead>
@@ -51,6 +47,7 @@ function App() {
                   <td>{item.To}</td>
                   <td>{item.From}</td>
                   <td>{item.Eth}</td>
+                  <td>{item.Usd}</td>
                 </tr>
               ))}
             </tbody>
