@@ -1,5 +1,8 @@
+import os
 from flask import Flask, Response, send_from_directory
 from web3 import Web3
+import requests
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 from time import sleep
 from flask_cors import CORS
