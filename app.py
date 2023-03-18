@@ -83,7 +83,7 @@ def stream():
             except Exception as e:
                 print(e)
                 pass
-                      
+
             sleep(10)
     return Response(get_data(),mimetype='text/event-stream')
 
