@@ -35,54 +35,66 @@ headers = {
 }
 
 
-
+#For retrieving pricing information from CoinMarketCap
 def get_eth_pricing():
     try:
-        response = requests.get(url, headers=headers, params=parameters)
+        response = requests.get(coinmarket_url, headers=headers, params=parameters)
         eth_price = response.json()['data']['ETH']['quote']['USD']['price']
-        print(f"The current Ethereum price is {eth_price: .2f} USD.")
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
     return eth_price
 
 
+#For extracting and sorting latest block data
 def get_block_data(latest_block):
-   
-    # Get the latest block number
-    transactions = latest_block['transactions']     
+    
     transaction_list = []
+    
+    # Get all block transactions
+    transactions = latest_block['transactions']
+    
+    #Get current ETH pricing
     eth_price = get_eth_pricing()
+
     for t in transactions:
         transaction_data = {}
 
         transaction = w3.eth.get_transaction(t)
         value = transaction["value"]
 
+        #Convert current value from wei to ETH & USD
         converted_to_eth = float(w3.from_wei(value, 'ether'))
         converted_to_usd = float(w3.from_wei(value, 'ether') * Decimal(eth_price))
-
+        
+        #Create new transaction dictionary to append to list
         transaction_data.update({"Block": latest_block["number"], "To": transaction["to"], "From": transaction["from"], "Eth": converted_to_eth, "Usd": converted_to_usd})
-
         transaction_list.append(transaction_data)
+        
     return transaction_list
 
 
+#For streaming data from new blocks
 @app.route('/stream')
 def stream():
 
     def get_data():
         while True:
+            #Fetch latest block
             block = w3.eth.get_block('latest')
+
+            #Format latest block data, send as JSON
             try:
                 transactions = get_block_data(block)
-                trans = json.dumps(transactions)
-                yield f'data: {trans} \n\n'
+                json_transactions = json.dumps(transactions)
+                yield f'data: {json_transactions} \n\n'
             except Exception as e:
                 print(e)
                 pass
 
             sleep(10)
+
     return Response(get_data(),mimetype='text/event-stream')
+
 
 @app.route('/')
 def index():
