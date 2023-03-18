@@ -16,12 +16,12 @@ app.secret_key = os.getenv('APP_SECRET_KEY')
 
 #Get API keys from local environment
 ALCHEMY_API_KEY = os.getenv('ALCHEMY_API_KEY')
+WEBSOCKET_URI = os.getenv('ALCHEMY_WEBSOCKETS_URI')
 COINMARKETCAP_API_KEY = os.getenv('COINMARKETCAP_API_KEY')
 
-
 #Establish Alchemy connection
-alchemy_url = "https://eth-mainnet.g.alchemy.com/v2/" + ALCHEMY_API_KEY
-w3 = Web3(Web3.HTTPProvider(alchemy_url))
+ALCHEMY_URL = "https://eth-mainnet.g.alchemy.com/v2/" + ALCHEMY_API_KEY
+w3 = Web3(Web3.HTTPProvider(ALCHEMY_URL))
 
 
 #Set up request for CoinMarketCap
@@ -52,7 +52,6 @@ def get_block_data(latest_block):
     
     # Get all block transactions
     transactions = latest_block['transactions']
-    
     #Get current ETH pricing
     eth_price = get_eth_pricing()
 
@@ -81,7 +80,6 @@ def stream():
         while True:
             #Fetch latest block
             block = w3.eth.get_block('latest')
-
             #Format latest block data, send as JSON
             try:
                 transactions = get_block_data(block)
@@ -90,7 +88,7 @@ def stream():
             except Exception as e:
                 print(e)
                 pass
-
+ 
             sleep(8)
 
     return Response(get_data(),mimetype='text/event-stream')
