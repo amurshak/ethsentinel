@@ -12,7 +12,6 @@ function App() {
 
     //Parse stream data and update
     function handleStream(e) {
-      console.log(e);
       const newData = JSON.parse(e.data)
 
       setData(newData)

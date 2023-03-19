@@ -54,13 +54,14 @@ def get_block_data(latest_block):
     transactions = latest_block['transactions']
     #Get current ETH pricing
     eth_price = get_eth_pricing()
-    count = 0
+
     for t in transactions:
         transaction_data = {}
-        if count == 0:
-            print(t)
-            count +=1
-        transaction = w3.eth.get_transaction(t)
+        try:
+            transaction = w3.eth.get_transaction(t)
+        except Exception as e:
+            print(e)
+            pass
         value = transaction["value"]
 
         #Convert current value from Wei to ETH & USD
