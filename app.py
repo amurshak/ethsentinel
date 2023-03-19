@@ -99,4 +99,4 @@ def index():
     return send_from_directory('./client/build', 'index.html')
 
 if __name__ == '__main__':
-    app.run(port=5001)
+    app.run()
