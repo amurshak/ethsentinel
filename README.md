@@ -25,3 +25,6 @@ Set environment variables:
 - `export SECRET_KEY='XXXXXXXXXXXXXXX'`
 - `export ALCHEMY_API_KEY='XXXXXXXXXXXXXXX'`
 - `export COINMARKETCAP_API_KEY='XXXXXXXXXXXXXXX'`
+
+Run:
+- `python3 app.py`
