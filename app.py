@@ -94,7 +94,7 @@ def stream():
     return Response(get_data(),mimetype='text/event-stream')
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     return send_from_directory('./client/build', 'index.html')
 
