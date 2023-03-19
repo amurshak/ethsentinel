@@ -73,7 +73,7 @@ def get_block_data(latest_block):
 
 
 #For streaming data from new blocks
-@app.route('/stream')
+@app.route('/stream', methods=['GET', 'POST'])
 def stream():
 
     def get_data():
