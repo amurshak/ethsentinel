@@ -54,10 +54,12 @@ def get_block_data(latest_block):
     transactions = latest_block['transactions']
     #Get current ETH pricing
     eth_price = get_eth_pricing()
-
+    count = 0
     for t in transactions:
         transaction_data = {}
-
+        if count == 0:
+            print(t)
+            count +=1
         transaction = w3.eth.get_transaction(t)
         value = transaction["value"]
 
@@ -79,7 +81,11 @@ def stream():
     def get_data():
         while True:
             #Fetch latest block
-            block = w3.eth.get_block('latest')
+            try:
+                block = w3.eth.get_block('latest')
+            except Exception as e:
+                print(e)
+                pass
             #Format latest block data, send as JSON
             try:
                 transactions = get_block_data(block)
