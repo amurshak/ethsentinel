@@ -89,7 +89,7 @@ def stream():
                 print(e)
                 pass
  
-            sleep(8)
+            sleep(10)
 
     return Response(get_data(),mimetype='text/event-stream')
 
